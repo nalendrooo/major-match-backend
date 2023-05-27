@@ -42,7 +42,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: capstone-project-c23-ps149
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          service_account: github-action-major-match@capstone-project-c23-ps149.iam.gserviceaccount.com
           export_default_credentials: true
 
       - name: Authenticate Docker to Google Container Registry
