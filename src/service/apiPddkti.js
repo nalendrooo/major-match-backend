@@ -1,16 +1,3 @@
-//CARI UNIVERSITAS DAN PRODI
-// https://api-frontend.kemdikbud.go.id/hit/ump
-
-// CARI DETAIL by ID_SP
-// https://api-frontend.kemdikbud.go.id/v2/detail_pt/Q0U4QzYyMDEtRDEzMi00NkQyLTg1QzgtMjM1MTI2NEVFRDMz
-// https://api-frontend.kemdikbud.go.id/v2/detail_pt_jumlah/MzZBQjRBN0EtMEY3OS00RjZDLTkwNkMtQzMwQTU2MEZCNDQ4
-
-// LIHAT SEMUA PRODI DI UNIVERSITAS by ID_SP
-// https://api-frontend.kemdikbud.go.id/v2/detail_pt_prodi/MzZBQjRBN0EtMEY3OS00RjZDLTkwNkMtQzMwQTU2MEZCNDQ4
-
-// LIHAT DETAIL PRODI berdasarkan ID_SMS
-// https://api-frontend.kemdikbud.go.id/detail_prodi/QUY2N0E1MzAtOUU2QS00MzhCLTg3NzEtMUJDOTYyM0IxNTZF
-
 const axios = require('axios')
 
 const URL_BACKEND = 'https://api-frontend.kemdikbud.go.id/'
