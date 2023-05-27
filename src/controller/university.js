@@ -65,7 +65,7 @@ const searchProdi = async (req, res) => {
 const universityDetail = async (req, res) => {
 	const query = req.params.id_sp
 	try {
-		const response = await GETDataUniversity(query)
+		// const response = await GETDataUniversity(query)
 		const response2 = await GETDetailUniversity(query)
 		const result = {
 			npsn: response2.npsn,
