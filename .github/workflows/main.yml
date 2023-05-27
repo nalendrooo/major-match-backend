@@ -6,66 +6,21 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  job_id:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          node-version: '14'
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
-      - name: Install Dependencies
-        run: npm install
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-appengine@v1'
 
-      - name: Build Docker Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: false
-          tags: major-match-backend:${{ github.sha }}
-
-      - name: Authenticate gcloud
-        uses: google-github-actions/auth@v1
-        with:
-          application_default_credentials: true
-          export_default_credentials: true
-
-      - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: capstone-project-c23-ps149
-          skip_install: false
-          version: latest
-        env:
-          DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-
-      - name: Authenticate Docker to Google Container Registry
-        run: gcloud auth configure-docker --quiet
-
-      - name: Tag and Push Docker Image to Google Container Registry
-        run: |
-          docker tag major-match-backend:${{ github.sha }} gcr.io/capstone-project-c23-ps149/major-match-backend:${{ github.sha }}
-          docker push gcr.io/capstone-project-c23-ps149/major-match-backend:${{ github.sha }}
-
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy major-match-backend \
-            --image gcr.io/capstone-project-c23-ps149/major-match-backend:${{ github.sha }} \
-            --platform managed \
-            --region asia-shouteast2
-
-      - name: Start Application
-        run: |
-          npm install
-          npm start
-        working-directory: /src
+      # Example of using the output
+      - id: 'test'
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
