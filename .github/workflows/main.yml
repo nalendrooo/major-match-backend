@@ -1,4 +1,4 @@
-name: CI/CD to Cloud Run Major Match
+name: CI/CD to App Engine
 
 on:
   push:
@@ -6,21 +6,24 @@ on:
       - master
 
 jobs:
-  job_id:
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v1'
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-          service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+          node-version: '16'
 
-      - id: 'deploy'
-        uses: 'google-github-actions/deploy-appengine@v1'
+      - name: Install dependencies
+        run: npm install
 
-      # Example of using the output
-      - id: 'test'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
+      - name: Deploy to App Engine
+        uses: GoogleCloudPlatform/github-actions/app-engine-deploy@main
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          app_dir: './gcp/'
