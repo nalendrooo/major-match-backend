@@ -29,6 +29,12 @@ jobs:
           push: false
           tags: major-match-backend:${{ github.sha }}
 
+      - name: Authenticate gcloud
+        uses: google-github-actions/auth@v1
+        with:
+          application_default_credentials: true
+          export_default_credentials: true
+
       - name: Configure Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
