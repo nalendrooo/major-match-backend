@@ -13,13 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-     - name: Login
-          uses: google-github-actions/setup-gcloud@v0
-          with:
-            project_id: ${{ secrets.GCP_PROJECT_ID }}
-            service_account_email: ${{ secrets.GCP_EMAIL }}
-            service_account_key: ${{ secrets.GCP_SA_KEY }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -36,21 +29,20 @@ jobs:
           push: false
           tags: major-match-backend:${{ github.sha }}
 
-      - name: Set up environment variables
-        run: |
-          echo "DB_HOSTNAME=${{ secrets.DB_HOSTNAME }}" >> $GITHUB_ENV
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> $GITHUB_ENV
-          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> $GITHUB_ENV
-
       - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: capstone-project-c23-ps149
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          uses: google-github-actions/setup-gcloud@v1
+          with:
+            project_id: capstone-project-c23-ps149
+            skip_install: false
+            version: latest
+          env:
+            DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
+            DB_USERNAME: ${{ secrets.DB_USERNAME }}
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            DB_NAME: ${{ secrets.DB_NAME }}
+            ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+            REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+
 
       - name: Authenticate Docker to Google Container Registry
         run: gcloud auth configure-docker --quiet
@@ -68,4 +60,7 @@ jobs:
             --region asia-shouteast2
 
       - name: Start Application
-        run: npm start
+        run: |
+          npm install
+          npm start
+        working-directory: /src
