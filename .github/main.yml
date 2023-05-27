@@ -26,4 +26,4 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          app_dir: './gcp/'
+          app_dir: './app-engine-deploy/'
