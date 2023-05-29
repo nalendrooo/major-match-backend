@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Menggunakan image dasar Node.js
-FROM node:14
+FROM node:16
 
 # Menentukan direktori kerja di dalam kontainer
 WORKDIR /src
