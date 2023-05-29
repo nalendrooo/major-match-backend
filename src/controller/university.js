@@ -63,13 +63,27 @@ const searchProdi = async (req, res) => {
 	}
 }
 const universityDetail = async (req, res) => {
-	const query = req.params.id_sp
+	const id_sp = req.params.id_sp
 	try {
-		// const response = await GETDataUniversity(query)
-		const response2 = await GETDetailUniversity(query)
+		const response = await GETDataUniversity(id_sp)
+		const response2 = await GETDetailUniversity(id_sp)
 		const result = {
+			id_sp: response2.id_sp,
+			universitas: response2.nm_lembaga,
+			tanggal_berdiri: response2.tgl_berdiri,
+			jalan: response2.jln,
+			wilayah: response2.nama_wil,
+			telephone: response2.no_tel,
+			fax: response2.no_fax,
+			email: response2.email,
+			website: response2.website,
+			kode_pos: response2.kode_pos,
+			rektor: response2.nama_rektor,
 			npsn: response2.npsn,
 			status: response2.stat_sp,
+			jumlahFakultas: response.jumlalah_fakultas,
+			jumlahProdi: response.jumlah_prodi,
+			jumlahProdiAkreditasi: response.jumlah_prodi_akreditasi,
 		}
 
 		res.json(result)
@@ -80,14 +94,63 @@ const universityDetail = async (req, res) => {
 }
 
 const prodiAtUniversity = async (req, res) => {
-	const response = await GETProdiAtUniversity()
-	const response2 = await GETDetailProdiByIdSms(query)
-	const result = {
-		npsn: response2.npsn,
-		status: response2.stat_sp,
+	const id_sp = req.params.id_sp
+	try {
+		const response = await GETProdiAtUniversity(id_sp)
+
+		const result = response.map((index) => {
+			return {
+				id_sms: index.id_sms,
+				prodi: index.kode_prodi,
+				kode_prodi: index.nm_lemb,
+				status: index.stat_prodi,
+				jenjang: index.jenjang,
+				akreditas: index.akreditas,
+			}
+		})
+		res.json(result)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ error: 'Internal Server Error' })
 	}
+
 	return result
 }
-const prodiDetail = async () => {}
+const prodiDetail = async (req, res) => {
+	const id_sms = req.params.id_sms
+	try {
+		const response = await GETDetailProdiByIdSms(id_sms)
+		const id_sp = response.detailumum.linkpt.split('/')[2]
+		const data = response.detailumum
+		const result = {
+			npsn: data.npsn,
+			status: data.stat_prodi,
+			universitas: data.namapt,
+			kode_prodi: data.kode_prodi,
+			id_sp: id_sp,
+			prodi: data.nm_lemb,
+			jenjang: data.namajenjang,
+			tanggal_berdiri: data.tgl_berdiri,
+			sk_selenggara: data.sk_selenggara,
+			jalan: data.jln,
+			kode_pos: data.kode_pos,
+			telephone: data.no_tel,
+			fax: data.no_fax,
+			email: data.email,
+			website: data.website,
+			deskripsi: data.deskripsi,
+			visi: data.visi,
+			misi: data.misi,
+			kompetensi: data.kompetensi,
+			capaian: data.capaian,
+			akreditas: data.akreditas,
+			id_sms: data.id_sms,
+		}
+		res.json(result)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ error: 'Internal Server Error' })
+	}
+}
 
-module.exports = { searchUniversity, searchProdi, universityDetail }
+module.exports = { searchUniversity, searchProdi, universityDetail, prodiAtUniversity, prodiDetail }
