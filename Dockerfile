@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Menentukan port yang akan digunakan oleh aplikasi
-EXPOSE 5000
+EXPOSE $PORT
 
 # Menjalankan perintah untuk menjalankan aplikasi
 CMD ["node", "start"]
