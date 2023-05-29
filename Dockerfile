@@ -15,8 +15,5 @@ RUN npm install
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
 
-# Menentukan port yang akan digunakan oleh aplikasi
-EXPOSE $PORT
-
 # Menjalankan perintah untuk menjalankan aplikasi
 CMD ["node", "start"]
