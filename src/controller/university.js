@@ -64,6 +64,7 @@ const searchProdi = async (req, res) => {
 }
 const universityDetail = async (req, res) => {
 	const id_sp = req.params.id_sp
+
 	try {
 		const response = await GETDataUniversity(id_sp)
 		const response2 = await GETDetailUniversity(id_sp)
