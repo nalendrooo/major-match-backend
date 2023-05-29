@@ -20,7 +20,7 @@ const dbConnect = async () => {
 dbConnect()
 
 const app = express()
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8080
 
 app.use(cookieParser())
 app.use(cors({ credentials: true, origin: 'http://127.0.0.1:3000' }))
