@@ -1,3 +1,5 @@
+# Android API Ci/CD pipelines
+
 name: Android API Ci/CD pipelines
 
 on:
@@ -10,14 +12,6 @@ jobs:
         runs-on: ubuntu-latest
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
-            ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-            DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
-            DB_NAME: ${{ secrets.DB_NAME }}
-            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-            DB_USERNAME: ${{ secrets.DB_USERNAME }}
-            PORT: ${{ secrets.PORT }}
-            REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-
         steps:
             - name: Login
               uses: google-github-actions/setup-gcloud@v0
@@ -44,8 +38,13 @@ jobs:
                     --build-arg REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }} \
                     .
 
-              - name: Push Docker Image
-                run: docker push $IMAGE_NAME
+            - name: Push Docker Image
+              run: docker push $IMAGE_NAME
 
-              - name: Deploy Docker Image
-                run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region asia-southeast2 --platform managed --allow-unauthenticated
+            - name: Deploy Docker Image
+              run: |
+                  gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
+                    --image $IMAGE_NAME \
+                    --region asia-southeast2 \
+                    --platform managed \
+                    --allow-unauthenticated
