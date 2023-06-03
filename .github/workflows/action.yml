@@ -49,3 +49,6 @@ jobs:
                     --platform managed \
                     --allow-unauthenticated \
                     --port 5000
+
+                    --port ${{ env.PORT }}
+                    --port ${{ secrets.PORT }}
