@@ -48,4 +48,4 @@ jobs:
                     --region asia-southeast2 \
                     --platform managed \
                     --allow-unauthenticated \
-                    --port ${{ env.PORT }}
+                    --port ${{ secrets.PORT }}
