@@ -47,4 +47,5 @@ jobs:
                     --image $IMAGE_NAME \
                     --region asia-southeast2 \
                     --platform managed \
-                    --allow-unauthenticated
+                    --allow-unauthenticated \
+                    --port ${{ env.PORT }}
