@@ -1,6 +1,6 @@
 # Android API Ci/CD pipelines
 
-name: Android API Ci/CD pipelines
+name: Backend API CI/CD pipelines
 
 on:
     push:
