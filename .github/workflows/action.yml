@@ -48,4 +48,3 @@ jobs:
                     --region asia-southeast2 \
                     --platform managed \
                     --allow-unauthenticated
-                    --port 8080

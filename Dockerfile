@@ -15,7 +15,9 @@ RUN npm install
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
 
-# Menentukan port yang akan digunakan oleh aplikasi
+# Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
+ARG PORT
+ENV PORT $PORT
 EXPOSE $PORT
 
 # Menjalankan perintah untuk menjalankan aplikasi

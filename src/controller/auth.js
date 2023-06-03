@@ -58,9 +58,13 @@ const login = async (req, res) => {
 		const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, {
 			expiresIn: '20s',
 		})
-		const refreshToken = jwt.sign({ userId, username, email }, process.env.REFRESH_TOKEN_SECRET, {
-			expiresIn: '1d',
-		})
+		const refreshToken = jwt.sign(
+			{ userId, username, email },
+			process.env.REFRESH_TOKEN_SECRET,
+			{
+				expiresIn: '1d',
+			}
+		)
 
 		await Users.update(
 			{ refresh_token: refreshToken },
@@ -150,8 +154,8 @@ const register = async (req, res) => {
 }
 
 const getRefreshToken = async (req, res) => {
+	const refreshToken = req.cookies.refreshToken
 	try {
-		const refreshToken = req.cookies.refreshToken
 		if (!refreshToken) return res.sendStatus(401)
 		const user = await Users.findOne({
 			where: {
@@ -165,9 +169,13 @@ const getRefreshToken = async (req, res) => {
 			const username = user.username
 			const email = user.email
 
-			const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, {
-				expiresIn: '10s',
-			})
+			const accessToken = jwt.sign(
+				{ userId, username, email },
+				process.env.ACCESS_TOKEN_SECRET,
+				{
+					expiresIn: '10s',
+				}
+			)
 			res.json({ accessToken })
 		})
 	} catch (error) {
