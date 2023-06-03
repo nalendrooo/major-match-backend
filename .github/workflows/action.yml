@@ -12,6 +12,12 @@ jobs:
         runs-on: ubuntu-latest
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+            DB_NAME: ${{ secrets.DB_NAME }}
+            DB_USERNAME: ${{ secrets.DB_USERNAME }}
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
+            REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+            ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         steps:
             - name: Login
               uses: google-github-actions/setup-gcloud@v0
@@ -28,15 +34,7 @@ jobs:
 
             - name: Build Docker image
               run: |
-                  docker build -t $IMAGE_NAME \
-                    --build-arg PORT=${{ secrets.PORT }} \
-                    --build-arg ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }} \
-                    --build-arg DB_HOSTNAME=${{ secrets.DB_HOSTNAME }} \
-                    --build-arg DB_NAME=${{ secrets.DB_NAME }} \
-                    --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-                    --build-arg DB_USERNAME=${{ secrets.DB_USERNAME }} \
-                    --build-arg REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }} \
-                    .
+                  docker build -t $IMAGE_NAME
 
             - name: Push Docker Image
               run: docker push $IMAGE_NAME
@@ -49,3 +47,4 @@ jobs:
                     --platform managed \
                     --allow-unauthenticated \
                     --port 5000
+                    --set-env-vars="DB_NAME=$DB_NAME,DB_USERNAME=$DB_USERNAME,DB_PASSWORD=$DB_PASSWORD,DB_HOSTNAME=$DB_HOSTNAME,REFRESH_TOKEN_SECRET=$REFRESH_TOKEN_SECRET,ACCESS_TOKEN_SECRET=$ACCESS_TOKEN_SECRET"
