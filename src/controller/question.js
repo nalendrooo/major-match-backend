@@ -21,9 +21,12 @@ const saveQuestion = async (req, res) => {
 		})
 
 		//TODO: perlu dikerjakan
-		const getAnswer = await axios.post('http://localhost:8080/predict', {
-			text: 'question',
-		})
+		const getAnswer = await axios.post(
+			'https://dummy-dot-capstone-project-c23-ps149.et.r.appspot.com/predict',
+			{
+				text: 'question',
+			}
+		)
 
 		await Answer.create({
 			id_question: id,
