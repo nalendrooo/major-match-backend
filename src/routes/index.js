@@ -9,7 +9,7 @@ const app = express()
 
 app.use('/auth', authRoutes)
 app.use('/users', verifyToken, usersRoutes)
-app.use('/recomendation', verifyToken, recomendationRoutes)
+app.use('/recomendation', recomendationRoutes)
 app.use('/university', universityRoutes)
 
 module.exports = app

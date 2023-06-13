@@ -9,6 +9,10 @@ const {
 
 const searchUniversity = async (req, res) => {
 	const query = req.query.univ
+
+	if (!query) {
+		res.status(400).json({ message: 'University Undefined' })
+	}
 	try {
 		const response = await SEARCHUniversity(query)
 
@@ -33,12 +37,16 @@ const searchUniversity = async (req, res) => {
 		res.json(result)
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.status(500).json({ message: 'Internal Server Error' })
 	}
 }
 
 const searchProdi = async (req, res) => {
 	const query = req.query.prodi
+
+	if (!query) {
+		res.status(400).json({ error: 'Prodi Undefined' })
+	}
 	try {
 		const response = await SEARCHProdi(query)
 		const result = response.prodi.map((index) => {
@@ -59,11 +67,15 @@ const searchProdi = async (req, res) => {
 		res.json(result)
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.status(500).json({ message: 'Internal Server Error' })
 	}
 }
 const universityDetail = async (req, res) => {
 	const id_sp = req.params.id_sp
+
+	if (!id_sp) {
+		res.status(400).json({ message: 'Id Sp Undefined' })
+	}
 
 	try {
 		const response = await GETDataUniversity(id_sp)
@@ -90,12 +102,16 @@ const universityDetail = async (req, res) => {
 		res.json(result)
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.status(500).json({ message: 'Internal Server Error' })
 	}
 }
 
 const prodiAtUniversity = async (req, res) => {
 	const id_sp = req.params.id_sp
+
+	if (!id_sp) {
+		res.status(400).json({ message: 'Id Sp Undefined' })
+	}
 	try {
 		const response = await GETProdiAtUniversity(id_sp)
 
@@ -112,13 +128,15 @@ const prodiAtUniversity = async (req, res) => {
 		res.json(result)
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.status(500).json({ message: 'Internal Server Error' })
 	}
-
-	return result
 }
 const prodiDetail = async (req, res) => {
 	const id_sms = req.params.id_sms
+
+	if (!id_sms) {
+		res.status(400).json({ message: 'Id Sms Undefined' })
+	}
 	try {
 		const response = await GETDetailProdiByIdSms(id_sms)
 		const id_sp = response.detailumum.linkpt.split('/')[2]
@@ -150,7 +168,7 @@ const prodiDetail = async (req, res) => {
 		res.json(result)
 	} catch (error) {
 		console.error(error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.status(500).json({ message: 'Internal Server Error' })
 	}
 }
 

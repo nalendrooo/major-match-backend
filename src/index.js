@@ -4,6 +4,7 @@ const cors = require('cors')
 const db = require('./config/database.js')
 const Users = require('./models/users.js')
 const Questions = require('./models/questions.js')
+const Answer = require('./models/answer.js')
 
 require('dotenv').config()
 
@@ -13,6 +14,7 @@ const dbConnect = async () => {
 		console.log('Database connected..')
 		await Users.sync()
 		await Questions.sync()
+		await Answer.sync()
 	} catch (error) {
 		console.log(error)
 	}
