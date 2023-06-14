@@ -12,6 +12,9 @@ const Answer = db.define(
 		answer: {
 			type: DataTypes.TEXT,
 		},
+		precentace: {
+			type: DataTypes.INTEGER,
+		},
 	},
 	{
 		freezeTableName: true,
