@@ -23,7 +23,7 @@ const saveQuestion = async (req, res) => {
 		const getAnswer = await axios.post(
 			'https://endpoint-ml-7qtkfzxmja-et.a.run.app/predict_text',
 			{
-				text: 'question',
+				text: question,
 			}
 		)
 		const recomendation = getAnswer.data.match(/[^,]+/g).map((item) => item.trim())

@@ -5,11 +5,14 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const { nanoid } = require('nanoid')
 
-//?contoh
-const getAllUser = async (req, res) => {
+const getUser = async (req, res) => {
+	const id = req.userId
 	try {
-		const users = await Users.findAll({
+		const users = await Users.findIOne({
 			attributes: ['id', 'username', 'email'],
+			where: {
+				id: id,
+			},
 		})
 		res.json(users)
 	} catch (error) {
@@ -214,6 +217,6 @@ module.exports = {
 	login,
 	register,
 	logout,
-	getAllUser,
 	getRefreshToken,
+	getUser,
 }
