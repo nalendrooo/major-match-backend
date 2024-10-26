@@ -19,6 +19,7 @@ const dbConnect = async () => {
 		console.log(error)
 	}
 }
+
 dbConnect()
 
 const app = express()
