@@ -11,7 +11,7 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
-            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+            IMAGE_NAME: ${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
 
         steps:
             - name: Login
@@ -22,22 +22,22 @@ jobs:
                   service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
             - name: Configure Docker
-              run: gcloud auth configure-docker gcr.io --quiet
+              run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev/ --quiet
 
             - name: Checkout repository
               uses: actions/checkout@v2
 
             - name: Build Docker image
               run: |
-                  docker build -t $IMAGE_NAME .
+                  docker build -t asia-southeast2-docker.pkg.dev/$IMAGE_NAME .
 
             - name: Push Docker Image
-              run: docker push $IMAGE_NAME
+              run: docker push asia-southeast2-docker.pkg.dev/$IMAGE_NAME
 
             - name: Deploy Docker Image
               run: |
                   gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
-                    --image $IMAGE_NAME \
+                    --image asia-southeast2-docker.pkg.dev/$IMAGE_NAME \
                     --region asia-southeast2 \
                     --platform managed \
                     --allow-unauthenticated \
